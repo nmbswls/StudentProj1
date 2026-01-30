@@ -1,0 +1,144 @@
+
+
+using System;
+using System.Collections.Generic;
+using UnityEditor.ShaderGraph;
+using UnityEngine;
+
+
+[Serializable]
+public class DropData
+{
+    public long Id;
+    public string ItemId;
+    public int Amount;
+    public Vector2 Position;
+    public float CreateTime;
+    public bool AutoPick;
+
+    public DropData(long id, string itemId, int amount, Vector2 position, float createTime, bool autoPick = true)
+    {
+        Id = id;
+        ItemId = itemId;
+        Amount = amount;
+        Position = position;
+        this.CreateTime = createTime;
+        AutoPick = autoPick;
+    }
+}
+
+public class SceneDropItem : MonoBehaviour, ISceneInteractable
+{
+    public string ShowName => cacheItemName;
+    private string cacheItemName;
+
+    public Vector2? SrcPos;
+    public bool IsFlying;
+
+    public long Id { get { return DropData?.Id ?? 0; } }
+
+
+    public DropData DropData { get; protected set; }
+    public bool AutoPick { get; set; }
+    public bool Picking { get; set; }
+
+    public Vector2 Pos => transform.position;
+
+
+
+    private void Awake()
+    {
+    }
+
+    public void InitFromDrop(DropData dropData, Vector3? srcPos/*, System.Action<int, GameObject> onPicked*/, bool autoPick)
+    {
+        this.DropData = dropData;
+        this.SrcPos = srcPos;
+        this.AutoPick = autoPick;
+
+        if (srcPos != null)
+        {
+            IsFlying = true;
+            transform.position = srcPos.Value;
+        }
+        else
+        {
+            IsFlying = false;
+            transform.position = dropData.Position;
+        }
+
+        //var itemCfg = FakeItemDatabase.GetItem(dropData.ItemId);
+        //cacheItemName = itemCfg?.DisplayName ?? "?";
+
+        //flyToPlayerMover.Clear();
+        Picking = false;
+    }
+
+    public void Update()
+    {
+        if (!Picking && IsFlying && SrcPos != null)
+        {
+            transform.position = Vector2.Lerp(transform.position, DropData.Position, 6f * Time.deltaTime);
+            Vector2 pos2 = transform.position;
+
+            if ((DropData.Position - pos2).magnitude < 0.01f)
+            {
+                IsFlying = false;
+            }
+        }
+    }
+
+
+    public Vector3 GetHintAnchorPosition()
+    {
+        return new Vector2(transform.position.x, transform.position.y) + new Vector2(0, 0f);
+    }
+
+    public List<SceneInteractSelection> GetInteractSelections(float dist)
+    {
+        var ret = new List<SceneInteractSelection>();
+        if (dist > 0.5f) return ret;
+
+        ret.Add(new SceneInteractSelection()
+        {
+            SelectId = 1,
+            SelectContent = "pick",
+        });
+        return ret;
+    }
+
+    public void TriggerInteract(int selectionId)
+    {
+        Debug.Log("手动拾取触发");
+        //MainGameManager.Instance.gameLogicManager.globalDropCollection.PickDrop(DropData.Id);
+    }
+
+    public bool CanInteractEnable(float dist)
+    {
+        if (dist > 0.5f) return false;
+        if (IsFlying)
+        {
+            return false;
+        }
+        if (AutoPick)
+        {
+            return false;
+        }
+        return true;
+    }
+
+
+    public void DoRecycle()
+    {
+        this.DropData = null;
+        this.Picking = false;
+        this.AutoPick = false;
+
+        gameObject.SetActive(false);
+    }
+
+    public bool IsAutoInteract()
+    {
+        return false;
+    }
+}
