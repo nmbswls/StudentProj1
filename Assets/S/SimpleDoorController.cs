@@ -79,6 +79,7 @@ public class SimpleDoorController : MonoBehaviour, ISceneInteractable
             {
                 IsSwitching = true;
                 var state = AnimancerComponent.Play(closeClip, 0);
+                state.Speed = 3.0f;
                 state.Events.OnEnd += () =>
                 {
                     IsSwitching = false;
@@ -92,7 +93,7 @@ public class SimpleDoorController : MonoBehaviour, ISceneInteractable
             {
                 IsSwitching = true;
                 var state = AnimancerComponent.Play(openClip, 0);
-
+                state.Speed = 3.0f;
                 state.Events.OnEnd += () =>
                 {
                     IsSwitching = false;
