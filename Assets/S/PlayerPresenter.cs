@@ -8,6 +8,12 @@ public class PlayerPresenter : MonoBehaviour
 
     // todo 移动到scene管理器
     public Transform EyePos;
+    public CharacterController cc;
+
+    private void Awake()
+    {
+        cc = GetComponent<CharacterController>();
+    }
 
     // Start is called before the first frame update
     void Start()

@@ -230,11 +230,13 @@ public partial class MainGameManager : MonoBehaviour
 
     public void DoPlayerSpawn()
     {
-        PlayerPresenter.transform.position = MapManager.BornPos.position;
-
         PlayerState.Instance.IsDead = false;
         PlayerState.Instance.SwitchSanityMode(PlayerState.ESanityState.Noemal);
 
         AllInOneUIManager.Instance.DeadMask.gameObject.SetActive(false);
+
+        PlayerPresenter.cc.enabled = false;
+        PlayerPresenter.transform.position = MapManager.BornPos.position;
+        PlayerPresenter.cc.enabled = true;
     }
 }
