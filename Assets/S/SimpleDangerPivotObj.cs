@@ -1,6 +1,7 @@
 
 
 using Animancer;
+using HighlightPlus;
 using System.Collections.Generic;
 using UnityEngine;
 using static PlayerState;
@@ -12,6 +13,7 @@ public class SimpleDangerPivotObj : MonoBehaviour, ISceneInteractable
     public AnimancerComponent AnimancerComponent;
 
     public string ShowName => "Ãªµã";
+    public HighlightEffect[] Effects;
 
     public Vector2 Pos => transform.position;
 
@@ -24,7 +26,17 @@ public class SimpleDangerPivotObj : MonoBehaviour, ISceneInteractable
 
     public void Update()
     {
-        
+        if(PlayerState.Instance != null)
+        {
+            if(PlayerState.Instance.SanityState == ESanityState.Danger)
+            {
+                
+            }
+            else
+            {
+
+            }
+        }
     }
     private void OnDestroy()
     {
@@ -37,6 +49,28 @@ public class SimpleDangerPivotObj : MonoBehaviour, ISceneInteractable
         {
             Used = false;
         }
+
+        if (Effects != null)
+        {
+            if (PlayerState.Instance.SanityState == ESanityState.Danger)
+            {
+                foreach (var effect in Effects)
+                {
+                    effect.highlighted = true;
+                }
+            }
+            else
+            {
+                foreach (var effect in Effects)
+                {
+                    effect.highlighted = false;
+                }
+            }
+        }
+
+        
+
+            
     }
 
     public bool CanInteractEnable(float dist)
