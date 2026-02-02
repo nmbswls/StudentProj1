@@ -16,6 +16,7 @@ public class AllInOneUIManager : MonoBehaviour
 
     public VisionMaskController VisionMaskController;
 
+    public Transform DeadLeftPanel;
     public TextMeshProUGUI DangerLeftTex;
     public RectTransform DeadMask;
     public Button DeadMaskClickArea;
@@ -105,11 +106,14 @@ public class AllInOneUIManager : MonoBehaviour
         {
             if(PlayerState.Instance.SanityState == ESanityState.Danger)
             {
+                DeadLeftPanel.gameObject.SetActive(true);
                 float timePassed = Time.time - PlayerState.Instance.ChangeStateTimer;
+                if (timePassed > 10.0) timePassed = 10.0f;
                 DangerLeftTex.text = (((int)(timePassed * 10) / 10f)).ToString();
             }
             else
             {
+                DeadLeftPanel.gameObject.SetActive(false);
                 DangerLeftTex.text = "";
             }
         }
