@@ -33,7 +33,7 @@ public class SceneInteractSelection
 public class SceneInteractSystem
 {
 
-    private float _checkRadius = 1.0f;
+    private float _checkRadius = 1f;
     private float _checkAngle = 45f;
 
     private float _interactTimer = 0f;
@@ -41,12 +41,13 @@ public class SceneInteractSystem
 
     public SceneInteractSystem()
     {
-        hits = new Collider[16];
+        hits = new RaycastHit[16];
 
         TargetLayerMask = 1 << LayerMask.NameToLayer("MapTarget");
     }
 
-    private Collider[] hits;
+    //private Collider[] hits;
+    private RaycastHit[] hits;
     public struct IntResultItem
     {
         public ISceneInteractable interactable;
@@ -121,20 +122,27 @@ public class SceneInteractSystem
         candidates.Clear();
 
         Vector3 center = presenter.EyePos.position;
-        int count = Physics.OverlapSphereNonAlloc(center, _checkRadius, hits, TargetLayerMask);
+
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        float radius = 0.2f; // 0.2米的半径，相当于手臂粗细
+
+        // 注意：SphereCast如果起点就在碰撞体内部，是检测不到的
+        int count = Physics.SphereCastNonAlloc(ray, radius, hits, _checkRadius, TargetLayerMask);
+
+        //int count = Physics.OverlapSphereNonAlloc(center, _checkRadius, hits, TargetLayerMask);
 
         // 遍历命中，筛选实现了接口的对象
         for (int i = 0; i < count; i++)
         {
-            var col = hits[i];
-            if (col == null) continue;
+            var hit = hits[i];
+            if (hit.collider == null) continue;
 
             // 在 Collider 或其父节点上寻找接口
             // 注意：GetComponentInParent 会产生少量 GC，若极致无 GC，可预缓存或自定义映射
-            var interactable = col.GetComponentInParent<ISceneInteractable>();
+            var interactable = hit.collider.GetComponentInParent<ISceneInteractable>();
             if (interactable == null) continue;
 
-            Vector3 diff = (Vector3)col.transform.position - center;
+            Vector3 diff = (Vector3)hit.collider.transform.position - center;
             var dist = diff.magnitude;
 
             bool canInt = false;
@@ -172,7 +180,7 @@ public class SceneInteractSystem
             {
                 interactable = interactable,
                 distance = dist,
-                pos = col.transform.position,
+                pos = hit.collider.transform.position,
             });
         }
 

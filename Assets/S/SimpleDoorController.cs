@@ -43,7 +43,7 @@ public class SimpleDoorController : MonoBehaviour, ISceneInteractable
 
     public Vector3 GetHintAnchorPosition()
     {
-        return HandleObj.transform.position;
+        return HandleObj.transform.position + Vector3.up * 0.1f;
     }
 
     public List<SceneInteractSelection> GetInteractSelections(float dist)

@@ -52,6 +52,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MainFireTex:
+        m_Texture: {fileID: 2800000, guid: c8ba91313fdd39b40b481dd9879abc19, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainNormal:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -95,7 +99,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
-    - _BurnProgress: 0.65
+    - _BurnProgress: 0
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -111,7 +115,7 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0.417
     - _Mode: 0
-    - _NoiseScale: 25
+    - _NoiseScale: 10
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _QueueControl: 0
@@ -131,7 +135,7 @@ Material:
     - _CharColor: {r: 0.9150943, g: 0.32326734, b: 0.2719384, a: 0}
     - _Color: {r: 0.101960756, g: 0.101960756, b: 0.101960756, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
-    - _FireColor: {r: 2.670157, g: 1.4350629, b: 0, a: 0}
+    - _FireColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3443006844440071311

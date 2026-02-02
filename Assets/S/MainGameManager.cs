@@ -232,7 +232,7 @@ public partial class MainGameManager : MonoBehaviour
     {
         PlayerPresenter.transform.position = MapManager.BornPos.position;
 
-        PlayerState.Instance.IsDead = true;
+        PlayerState.Instance.IsDead = false;
         PlayerState.Instance.SwitchSanityMode(PlayerState.ESanityState.Noemal);
 
         AllInOneUIManager.Instance.DeadMask.gameObject.SetActive(false);

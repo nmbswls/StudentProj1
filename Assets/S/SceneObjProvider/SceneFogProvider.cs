@@ -63,7 +63,7 @@ public class SceneFogProvider : MonoBehaviour
     }
 
     private float velocity = 0f; // 必须定义在类成员变量里，不能在 Update 里定义
-    public float smoothTime = 0.3f; // 多少秒到达目标
+    private float smoothTime = 0.25f; // 多少秒到达目标
     private void UpdateDensity()
     {
         if(Mathf.Abs(TargetDensity - currDensity) < 1e-2)

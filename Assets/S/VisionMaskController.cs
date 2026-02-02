@@ -17,8 +17,8 @@ public class VisionMaskController : MonoBehaviour
     public float maxVeinPower = 2.0f; // 紧张/遮挡时血管鲜红
 
     [Header("呼吸参数")]
-    private float breathSpeed = 10.0f;
-    private float breathAmplitude = 0.02f;
+    private float breathSpeed = 12.0f;
+    private float breathAmplitude = 0.03f;
 
     [Header("平滑过渡")]
     private float smoothTime = 0.2f;
